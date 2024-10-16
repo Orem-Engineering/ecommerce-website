@@ -1,0 +1,8 @@
+<!-- activation link wil be send to this html file -->
+<!--particular user id,particular url path and particular user token are passed here -->
+<!--passing particular value dynamicaaly using auto esacape tag  to particular url-->
+{% autoescape off %}
+Hi {{user.username}},
+Please click the link below to verify your orem account.
+http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}

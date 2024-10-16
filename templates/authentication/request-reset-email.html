@@ -1,0 +1,32 @@
+
+{% extends "navbar.html" %}
+{% block title %}
+  Orem  engineering - password Reset
+{% endblock title %}
+{% block body %}
+<br>
+<h1 class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center"> Request a  Reset link</h1>
+<div class="col-lg-7">
+<!-- printing warning message-->
+{% for message in messages %}
+<div class = "alert alert-{{message.tags}} alert-dismissible fade show" role="alert"> {{message}}.
+    <button type="button"class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+    <form action="/baseauthentication/request-reset-email/" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="500">
+       {% csrf_token %}
+        <div class="row gy-4">
+
+        <div class="col-md-12">
+          <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+        </div>
+          <button type="submit">Submit</button>
+        </div> 
+        <div>
+           <a href="/baseauthentication/login/">Go back?</a>
+        </div>
+
+      </div>
+    </form>
+  </div>
+  {% block body %}

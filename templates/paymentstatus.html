@@ -1,0 +1,139 @@
+{% extends "navbar.html" %}
+{% block title %}
+ Orem Store
+{% endblock title %}
+{% block body %}
+{% load static %}
+
+{% for productt,range,nSlides in allproducts %}
+<div class="container">
+    <div class="row gy-5">
+      <div class="my-3 text-center text-success bg-light">
+        <h3> {{productt.0.category}} Flashsale</h3>
+      </div>
+
+      <div class="col-xl-7" data-aos="fade-up" data-aos-delay="200">
+        <div class="row gy-4">
+            {% for i in productt %}
+            <div class="col-md-6 icon-box position-relative">
+              <i class="bi bi-briefcase"></i>
+              <h4><a href="" class="stretched-link">Corporis voluptates sit</a></h4>
+              <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
+            </div><!-- Icon-Box -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section><!-- /About Section -->
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>{{ productt.0.category}} Flashsale</h2>
+      <p> Top quality products in the marker!</p>
+    </div><!-- End Section Title -->
+  </section><!-- /Services Section -->
+
+  <!-- Alt Services Section -->
+  <section id="alt-services" class="alt-services section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+       
+        {% for i in productt %}
+      <div class="row gy-4">
+        <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="200">
+          <div class="service-item position-relative">
+            <div class="img">
+              <img src="/media/{{i.image}}" class="img-fluid" alt="">
+            </div>
+            <div class="details">
+              <a href="service-details.html" class="stretched-link" id="{{i.id}}">
+                <h3 id="namepr{{i.id}}">{{i.product_name}}</h3>
+                <!-- id will be used -->
+               <h6> price:Sh<span id="pricepr{{i.id}}"> {{i.price}}</span></h6>
+              </a>
+              <p>{{i.product_de scription|slice:"0:60"}}...</p> 
+
+            <span id="pr{{i.id}}" class="divpr">
+            <button id="pr{{i.id}}" class="btn btn-success cart btn-sm mt-0">AddToCart</button></span>
+
+              <a href="/media/{{i.image}}" class="btn btn-success btn-sm cart">View</a>
+
+            </div>
+          </div>
+        </div><!-- End Service Item -->
+        {% endfor %}
+    {% endfor %}
+      </div>
+
+{% block body %}
+{% block script %}
+<!-- add to acrt javascript code -->
+ <!-- bootsrap jquery code -->
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOb1gut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBh1AXv9k" crossorigin="anonymous"></script>
+
+<script>
+  // finding out the cart from local storage/updating
+  if (localStorage.getItem('cart') == null){
+    var cart = {};
+  } else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+    updateCart(cart);
+  }
+  //adding/incrementing Codes
+  // $('cart').click(function()){
+  $('.divpr').on('click','button.cart',function(){
+    var idstr = this.id.toString();
+    //autoincrementing in if part,else part is to add selected item price together
+    if (cart[idstr] != undefined) {
+      qty = cart[idsrt][0] + 1;
+    } else{
+      qty = 1;
+      name = document.getElementById('name'+ idstr).innerHTML;
+      price = document.getElementById('price'+ idstr).innerHTML;
+      cart[idstr] = [qty,name,price];
+    }
+    updateCart(cart);
+    // changing local storage session
+    localStorage.setItem('cart',JSON.stringify(cart));
+    document.getElementById('cart').innerHTML = Object.keys(cart).length;
+  });
+  // add pop over cart
+  $('#popcart').popover();
+  // running updatePopover function
+  updatePopover(cart);
+  
+  function updatePopover(cart){
+    console.log('We are inside update popover');
+    var popStr = "";
+    var popStr = popStr + "<h5> cart for your items in my shopping cart</h5><div class='mx-2 my-2'>";
+    var i = 1;
+    // getting & poping the name of selected item and number
+    for (var item in cart){
+      popStr = popStr + "<b>" + i +"</b>.";
+      popStr = popStr + document.getElementById('name'+ item).innerHTML.slice(0,19) + "..." + "<b>" + cart[item][0] + "</b>" + "Qty" + '<br>';
+      i = i + 1;
+    }
+
+    popStr = popStr + "</div> <a href = '/checkout'><button class='btn btn-success' id='clearCart'> Checkout </button></a><button class='btn btn-dark' onclick='clearCart()' id='clearCart'>ClearCart</button>"
+    document.getElementById('popcart').setAttribute('data-content',popStr);
+    $('#popcart').popover('show');
+  }
+
+  function clearCart(){ 
+    cart = JSON.parse(localStorage.getItem('cart'));
+    for (var item in cart){
+        document.getElementById('div' + item).innerHTML = '<button id="' + item '" class="btn btn-success cart">Add to cart</button>'}
+    localStorage.clear();
+    cart = {};
+    updateCart(cart);
+  
+  </script>
+  {% endblock script %}
+</body>
+</html>
